@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+{% block title %}Inicio{% endblock %}
+{% block content %}
+<section class="hero mb-5">
+  <div class="row align-items-center">
+    <div class="col-lg-7">
+      <h1 class="display-5 fw-bold">Construplan</h1>
+      <p class="lead">Sube tus planos y obtén propuestas inteligentes con IA. Gestiona modelos, genera reportes y comparte tu visión.</p>
+      <div class="d-flex gap-3">
+        <a href="{% url 'accounts:register' %}" class="btn btn-primary btn-lg">Crear cuenta</a>
+        <a href="{% url 'pages:tutorial' %}" class="btn btn-outline-light btn-lg">Ver tutorial</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mb-5">
+  <div class="row g-4">
+    {% for feature in features %}
+      <div class="col-md-4">
+        <div class="card h-100 card-highlight p-3">
+          <h4>{{ feature.title }}</h4>
+          <p class="text-muted">{{ feature.text }}</p>
+        </div>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="mb-5">
+  <div class="d-flex justify-content-between align-items-center mb-3">
+    <h3>Últimos modelos procesables</h3>
+    {% if user.is_authenticated %}
+      <a class="btn btn-sm btn-outline-primary" href="{% url 'models_core:model_create' %}">Crear modelo</a>
+    {% endif %}
+  </div>
+  <div class="row g-4">
+    {% for item in latest_models %}
+      <div class="col-md-4">
+        <div class="card shadow-sm h-100">
+          <div class="card-body">
+            <h5 class="card-title">{{ item.name }}</h5>
+            <p class="text-muted small mb-2">{{ item.created_at|date:"d/m/Y H:i" }}</p>
+            <p>{{ item.description|truncatechars:120 }}</p>
+            {% if user.is_authenticated %}
+              <a href="{{ item.get_absolute_url }}" class="btn btn-outline-primary btn-sm">Ver detalle</a>
+            {% else %}
+              <a href="{% url 'accounts:login' %}" class="btn btn-outline-secondary btn-sm">Ingresa para ver</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p class="text-muted">Aún no hay modelos registrados.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %}Usuarios{% endblock %}
+{% block content %}
+<h1 class="h3 mb-3">Usuarios registrados</h1>
+<div class="card shadow-sm mb-3">
+  <div class="card-body">
+    <form class="row g-3">
+      <div class="col-md-10">
+        <label class="form-label">Buscar</label>
+        <input class="form-control" type="text" name="query" value="{{ request.GET.query }}" placeholder="Usuario, correo o RUT">
+      </div>
+      <div class="col-md-2 d-flex align-items-end">
+        <button class="btn btn-outline-primary w-100">Filtrar</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="table-responsive">
+  <table class="table table-hover align-middle">
+    <thead>
+      <tr>
+        <th>Usuario</th>
+        <th>RUT</th>
+        <th>Email</th>
+        <th>Fecha registro</th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for user in users %}
+        <tr>
+          <td>{{ user.username }}</td>
+          <td>{{ user.rut }}</td>
+          <td>{{ user.email }}</td>
+          <td>{{ user.date_joined|date:"d/m/Y" }}</td>
+          <td class="text-end">
+            <a class="btn btn-sm btn-outline-secondary" href="{% url 'adminpanel:user_detail' user.pk %}">Detalle</a>
+          </td>
+        </tr>
+      {% empty %}
+        <tr><td colspan="5" class="text-center text-muted">No se encontraron usuarios.</td></tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+{% endblock %}

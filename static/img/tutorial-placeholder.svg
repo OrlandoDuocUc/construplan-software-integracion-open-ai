@@ -1,0 +1,5 @@
+<svg width="400" height="250" xmlns="http://www.w3.org/2000/svg">
+  <rect width="400" height="250" fill="#1D3557"/>
+  <text x="50%" y="40%" dominant-baseline="middle" text-anchor="middle" fill="#F1FAEE" font-size="28" font-family="Arial">Tutorial</text>
+  <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" fill="#A8DADC" font-size="16" font-family="Arial">Construplan Paso a Paso</text>
+</svg>

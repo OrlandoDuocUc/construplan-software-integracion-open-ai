@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %}Tutorial{% endblock %}
+{% block content %}
+<div class="row align-items-center mb-4">
+  <div class="col-md-5">
+    <img class="img-fluid rounded" src="{% static 'img/tutorial-placeholder.svg' %}" alt="Tutorial Construplan">
+  </div>
+  <div class="col-md-7">
+    <h2>Cómo funciona Construplan</h2>
+    <p>En minutos podrás cargar tu modelo, procesarlo y descargar un PDF completo.</p>
+  </div>
+</div>
+<div class="row g-4">
+  {% for step in steps %}
+    <div class="col-md-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <h4>{{ step.title }}</h4>
+          <p>{{ step.detail }}</p>
+        </div>
+      </div>
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

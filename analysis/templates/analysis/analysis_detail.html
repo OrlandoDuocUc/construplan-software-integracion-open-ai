@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% block title %}Resultado IA{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div>
+    <h1 class="h3">Resultado IA</h1>
+    <p class="text-muted mb-0">Modelo: {{ analysis.construction_model.name }}</p>
+  </div>
+  <div class="d-flex gap-2">
+    <a class="btn btn-outline-secondary" href="{{ analysis.construction_model.get_absolute_url }}">Volver</a>
+    <a class="btn btn-primary" href="{% url 'reports:result_pdf' analysis.construction_model.pk %}">Descargar PDF</a>
+  </div>
+</div>
+<div class="row g-4">
+  <div class="col-lg-7">
+    <div class="card shadow-sm h-100">
+      <div class="card-body">
+        {% if analysis.generated_image %}
+          <img class="img-fluid rounded" src="{{ analysis.generated_image.url }}" alt="Resultado IA">
+        {% else %}
+          <p class="text-muted">Sin imagen generada.</p>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h4>Ficha técnica</h4>
+        <p><strong>m² estimados:</strong> {{ analysis.square_meters }}</p>
+        <p><strong>Materiales:</strong> {{ analysis.materials }}</p>
+        <p><strong>Plazos:</strong> {{ analysis.timeline }}</p>
+        <p><strong>Recomendaciones:</strong> {{ analysis.recommendations }}</p>
+      </div>
+    </div>
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h4>Metadatos</h4>
+        <p class="mb-0">Generado: {{ analysis.created_at|date:"d/m/Y H:i" }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

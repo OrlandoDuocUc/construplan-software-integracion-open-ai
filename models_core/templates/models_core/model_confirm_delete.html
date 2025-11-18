@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block title %}Eliminar modelo{% endblock %}
+{% block content %}
+<div class="row justify-content-center">
+  <div class="col-md-6">
+    <div class="card shadow-sm">
+      <div class="card-body text-center">
+        <h2>¿Eliminar modelo?</h2>
+        <p>Esta acción no se puede deshacer.</p>
+        <p class="fw-bold">{{ construction_model.name }}</p>
+        <form method="post">
+          {% csrf_token %}
+          <button class="btn btn-danger" type="submit">Eliminar</button>
+          <a class="btn btn-outline-secondary" href="{{ construction_model.get_absolute_url }}">Cancelar</a>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block title %}Detalle modelo{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-3">
+  <div>
+    <h1 class="h3">{{ construction_model.name }}</h1>
+    <p class="text-muted mb-0">Creado {{ construction_model.created_at|date:"d/m/Y H:i" }}</p>
+  </div>
+  <div class="d-flex gap-2">
+    <a class="btn btn-outline-secondary" href="{% url 'models_core:model_list' %}">Volver</a>
+    {% if not analysis_result %}
+      <form method="post" action="{% url 'analysis:process_model' construction_model.pk %}">
+        {% csrf_token %}
+        <button class="btn btn-primary" type="submit">Procesar con IA (mock)</button>
+      </form>
+    {% else %}
+      <a class="btn btn-success" href="{% url 'analysis:analysis_detail' analysis_result.pk %}">Ver resultado</a>
+      <a class="btn btn-outline-primary" href="{% url 'reports:result_pdf' construction_model.pk %}">Descargar PDF</a>
+    {% endif %}
+  </div>
+</div>
+
+<div class="row g-4">
+  <div class="col-lg-7">
+    <div class="card shadow-sm mb-4">
+      <div class="card-body">
+        <h4>Descripción</h4>
+        <p>{{ construction_model.description }}</p>
+      </div>
+    </div>
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h4>Adjuntos</h4>
+        <ul class="list-group list-group-flush">
+          {% for attachment in construction_model.attachments.all %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+              <span>{{ attachment.file.name|cut:"uploads/" }}</span>
+              <a class="btn btn-sm btn-outline-secondary" href="{{ attachment.file.url }}" target="_blank">Ver</a>
+            </li>
+          {% empty %}
+            <li class="list-group-item text-muted">Sin archivos</li>
+          {% endfor %}
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-5">
+    <div class="card shadow-sm">
+      <div class="card-body">
+        <h4>Estado</h4>
+        <p><span class="badge text-bg-dark">{{ construction_model.get_status_display }}</span></p>
+        <p class="small text-muted mb-0">Responsable: {{ construction_model.user.full_name }}</p>
+      </div>
+    </div>
+    {% if analysis_result %}
+      <div class="card shadow-sm mt-4">
+        <div class="card-body">
+          <h4>Resumen IA</h4>
+          <p><strong>m² estimados:</strong> {{ analysis_result.square_meters }}</p>
+          <p><strong>Materiales:</strong> {{ analysis_result.materials }}</p>
+          <p><strong>Plazo:</strong> {{ analysis_result.timeline }}</p>
+        </div>
+      </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}

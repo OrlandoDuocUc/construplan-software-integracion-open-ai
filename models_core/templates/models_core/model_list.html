@@ -1,0 +1,70 @@
+{% extends 'base.html' %}
+{% block title %}Mis modelos{% endblock %}
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+  <div>
+    <h1 class="h3">Modelos de construcción</h1>
+    <p class="text-muted mb-0">Registra y gestiona tus planos.</p>
+  </div>
+  <a class="btn btn-primary" href="{% url 'models_core:model_create' %}">Nuevo modelo</a>
+  </div>
+<div class="card shadow-sm mb-4">
+  <div class="card-body">
+    <form class="row g-3">
+      <div class="col-md-6">
+        <label class="form-label">Buscar</label>
+        <input type="text" name="query" class="form-control" value="{{ request.GET.query }}">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label">Estado</label>
+        <select name="status" class="form-select">
+          <option value="">Todos</option>
+          <option value="procesable" {% if request.GET.status == 'procesable' %}selected{% endif %}>Procesable</option>
+          <option value="en_proceso" {% if request.GET.status == 'en_proceso' %}selected{% endif %}>En proceso</option>
+          <option value="procesado" {% if request.GET.status == 'procesado' %}selected{% endif %}>Procesado</option>
+        </select>
+      </div>
+      <div class="col-md-2 d-flex align-items-end">
+        <button class="btn btn-outline-primary w-100">Filtrar</button>
+      </div>
+    </form>
+  </div>
+</div>
+<div class="row g-4">
+  {% for model in models %}
+    <div class="col-md-6">
+      <div class="card shadow-sm h-100">
+        <div class="card-body">
+          <div class="d-flex justify-content-between align-items-center">
+            <h3 class="h5">{{ model.name }}</h3>
+            <span class="badge text-bg-secondary">{{ model.get_status_display }}</span>
+          </div>
+          <p class="text-muted small mb-1">{{ model.created_at|date:"d/m/Y H:i" }}</p>
+          <p>{{ model.description|truncatechars:150 }}</p>
+          <div class="d-flex gap-2">
+            <a class="btn btn-sm btn-outline-primary" href="{{ model.get_absolute_url }}">Detalle</a>
+            {% if user.is_staff or user == model.user %}
+              <a class="btn btn-sm btn-outline-danger" href="{% url 'models_core:model_delete' model.pk %}">Eliminar</a>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+  {% empty %}
+    <p class="text-muted">No hay modelos registrados.</p>
+  {% endfor %}
+</div>
+{% if is_paginated %}
+  <nav class="mt-4">
+    <ul class="pagination">
+      {% if page_obj.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.previous_page_number }}">Anterior</a></li>
+      {% endif %}
+      <li class="page-item active"><span class="page-link">{{ page_obj.number }}</span></li>
+      {% if page_obj.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{ page_obj.next_page_number }}">Siguiente</a></li>
+      {% endif %}
+    </ul>
+  </nav>
+{% endif %}
+{% endblock %}

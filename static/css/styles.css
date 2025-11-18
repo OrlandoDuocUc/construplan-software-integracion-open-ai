@@ -1,0 +1,25 @@
+:root {
+  --primary: #1d3557;
+  --accent: #e63946;
+}
+
+body {
+  background-color: #f5f5f5;
+}
+
+.hero {
+  background: linear-gradient(135deg, rgba(29, 53, 87, 0.9), rgba(69, 123, 157, 0.85)),
+    url('../img/construplan-img-principal.jpg') center/cover;
+  color: #fff;
+  padding: 5rem 2rem;
+  border-radius: 1rem;
+}
+
+.card-highlight {
+  border-left: 5px solid var(--accent);
+}
+
+.timeline-step {
+  border-left: 3px solid var(--primary);
+  padding-left: 1rem;
+}

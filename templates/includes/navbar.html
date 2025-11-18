@@ -1,0 +1,40 @@
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark shadow">
+  <div class="container">
+    <a class="navbar-brand fw-bold" href="{% url 'pages:home' %}">Construplan</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="mainNav">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <li class="nav-item"><a class="nav-link" href="{% url 'pages:home' %}">Inicio</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'pages:about' %}">Sobre Nosotros</a></li>
+        <li class="nav-item"><a class="nav-link" href="{% url 'pages:tutorial' %}">Tutorial</a></li>
+        {% if user.is_authenticated %}
+        <li class="nav-item"><a class="nav-link" href="{% url 'models_core:model_list' %}">Modelos</a></li>
+        {% if user.is_staff %}
+        <li class="nav-item"><a class="nav-link" href="{% url 'adminpanel:user_list' %}">Panel Admin</a></li>
+        {% endif %}
+        {% endif %}
+      </ul>
+      <div class="d-flex align-items-center gap-3">
+        {% if user.is_authenticated %}
+          <span class="badge text-bg-info">Modelos: {{ global_model_count|default:0 }}</span>
+          <span class="badge text-bg-success">Análisis: {{ global_results_count|default:0 }}</span>
+          <div class="dropdown">
+            <a class="btn btn-outline-light dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+              {{ user.first_name|default:user.username }}
+            </a>
+            <ul class="dropdown-menu dropdown-menu-end">
+              <li><a class="dropdown-item" href="{% url 'accounts:profile' %}">Mi perfil</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{% url 'accounts:logout' %}">Cerrar sesión</a></li>
+            </ul>
+          </div>
+        {% else %}
+          <a class="btn btn-outline-light" href="{% url 'accounts:login' %}">Ingresar</a>
+          <a class="btn btn-primary" href="{% url 'accounts:register' %}">Crear cuenta</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</nav>
